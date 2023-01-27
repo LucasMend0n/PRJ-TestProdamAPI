@@ -4,10 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CafeteriaCrud.Controllers
-
 {
     [ApiController]
-    [Route("Client")]
+    [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -22,8 +21,9 @@ namespace CafeteriaCrud.Controllers
         {
             return Ok(await _appDbContext.Clients.AsNoTracking().ToListAsync());
         }
-        [HttpGet("/{id:int}")]
-        public async Task<ActionResult<Client>> GetClientById(int id)
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Client>> GetById(int id)
         {
             Client client = await _appDbContext.Clients.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             if (client is null)
@@ -43,9 +43,7 @@ namespace CafeteriaCrud.Controllers
             return Ok(client);
         }
 
-
-        [HttpPut]
-        [Route("/{id:int}")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<Client>> Put([FromBody] Client client, int id)
         {
             if (!ModelState.IsValid)
@@ -62,12 +60,11 @@ namespace CafeteriaCrud.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return BadRequest(new { message = "Não foi possivel atualizar o cliente!" });
+                return BadRequest(new { message = "Não foi possivel atualizar cliente!" });
             }
         }
 
-        [HttpDelete]
-        [Route("/{id:int}")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult<Client>> Delete(int id)
         {
             Client client = await _appDbContext.Clients.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
@@ -78,16 +75,12 @@ namespace CafeteriaCrud.Controllers
             {
                 _appDbContext.Clients.Remove(client);
                 await _appDbContext.SaveChangesAsync();
-                return Ok(new { message = "Cliente deletado!" });
+                return Ok(new { message = "Produto deletado!" });
             }
             catch (Exception)
             {
-                return BadRequest(new { message = "Não foi possivel remover o Cliente!" });
+                return BadRequest(new { message = "Não foi possivel remover o cliente!" });
             }
-
         }
-
     }
-
 }
-

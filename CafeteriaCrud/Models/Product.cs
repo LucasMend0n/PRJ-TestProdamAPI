@@ -12,7 +12,10 @@ namespace CafeteriaCrud.Models
         [Required(ErrorMessage = "É necessário uma descrição para o produto!")]
         [MaxLength(300, ErrorMessage = "Tamanho da descrição incompatível!")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "É necessário um valor para o produto")]
+        [Required(ErrorMessage = "É necessário informar a marca do produto!")]
+        public string Brand { get; set; }
+        [Required(ErrorMessage = "É necessário um valor para o produto!")]
         public double Price { get; set; }
+        
     }
 }
